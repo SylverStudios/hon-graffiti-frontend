@@ -3,8 +3,8 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 
 const DecoratedString = ({ segments }) => (
   <span>
-    {segments.map(segment => (
-      <span style={{ color: segment.color }}>{segment.content}</span>
+    {segments.map((segment, i) => (
+      <span style={{ color: segment.color }} key={i}>{segment.content}</span>
     ))}
   </span>
 );
