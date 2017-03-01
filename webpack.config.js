@@ -66,7 +66,7 @@ module.exports = {
     // directory with a fingerprinted name
     new ExtractTextPlugin('[hash].css'),
     new HtmlWebpackPlugin({ // autogenerates an index.html with the following parameters
-      title: 'Supervirus',
+      title: 'Hon Graffiti',
       favicon: 'app/favicon.png',
     }),
     new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify(process.env.NODE_ENV) } }),

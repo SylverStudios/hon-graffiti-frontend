@@ -1,16 +1,31 @@
-import React from 'react';
-import { List } from 'immutable';
+import React, { Component } from 'react';
+import { Map, List } from 'immutable';
 
-import SampleResponse from '../test-resources/SampleResponse';
-import DecoratedString from './DecoratedString';
+import StoredStrings from './StoredStrings';
+import StringInput from './StringInput';
+import parseRaw from './parseRaw';
 
-const sample = new List(SampleResponse());
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { strings: new Map() };
+    this.addString = this.addString.bind(this);
+  }
 
-const App = () => (
-  <div>
-    Hon graffiti frontend <br />
-    here is a sample thing: <DecoratedString segments={sample} />
-  </div>
-);
+  addString(raw) {
+    const strings = this.state.strings.set(raw, new List(parseRaw(raw)));
+    this.setState({ strings });
+  }
+
+  render() {
+    return (
+      <div>
+        Hon graffiti frontend <br />
+        <StoredStrings strings={this.state.strings} />
+        <StringInput onSubmit={this.addString} />
+      </div>
+    );
+  }
+}
 
 export default App;
