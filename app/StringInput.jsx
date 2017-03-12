@@ -9,23 +9,46 @@ const connector = connect(null, {
 class StringInput extends Component {
   constructor(props) {
     super(props);
+    this.state = { value: '' };
     this.onSubmit = this.onSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
   }
   onSubmit(e) {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     this.props.createString(this.input.value);
     this.input.value = '';
+  }
+  onChange() {
+    this.setState({ value: this.input.value });
+  }
+  onKeyDown(e) {
+    if (e.keyCode === 13 && e.metaKey) {
+      e.preventDefault();
+      this.onSubmit();
+    }
   }
   render() {
     return (
       <form className={style.component} onSubmit={this.onSubmit}>
-        <input
+        <pre className={style.mirrorElement}>
+          <span
+            className={style.mirrorElementContent}
+          >
+            {this.state.value}
+          </span>
+          <br />
+        </pre>
+        <textarea
           ref={(c) => { this.input = c; }}
-          type="text"
           className={style.input}
+          value={this.state.value}
+          onChange={this.onChange}
+          onKeyDown={this.onKeyDown}
           placeholder="Enter a string"
         />
-        <input type="submit" className={style.submit} value="Submit" />
       </form>
     );
   }
