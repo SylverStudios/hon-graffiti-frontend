@@ -13,9 +13,15 @@
 .raw {
   flex: 1 0 0;
   margin-right: 10px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .rendered {
   flex: 1 0 0;
   margin-left: 10px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
 }
