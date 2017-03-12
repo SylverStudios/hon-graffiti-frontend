@@ -1,3 +1,5 @@
+@import 'constants';
+
 .component {
   width: 100%;
   height: 40px;
@@ -6,7 +8,7 @@
 }
 
 .inner {
-  width: 1050px;
+  width: $contentWidth;
   height: 100%;
   margin: 0 auto;
   display: flex;

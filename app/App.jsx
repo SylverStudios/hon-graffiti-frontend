@@ -4,11 +4,14 @@ import TopBar from './TopBar';
 import StoredStrings from './StoredStrings';
 import StringInput from './StringInput';
 
+import style from './App.scss';
+
 export default () => (
   <div>
     <TopBar />
-    Hon graffiti frontend <br />
-    <StoredStrings />
-    <StringInput />
+    <div className={style.inner}>
+      <StringInput />
+      <StoredStrings />
+    </div>
   </div>
 );

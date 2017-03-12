@@ -18,7 +18,7 @@ class StringInput extends Component {
   }
   render() {
     return (
-      <form onSubmit={this.onSubmit}>
+      <form className={style.component} onSubmit={this.onSubmit}>
         <input
           ref={(c) => { this.input = c; }}
           type="text"
