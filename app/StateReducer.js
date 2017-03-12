@@ -11,11 +11,15 @@ const startingStrings =
 
 const initialState = new (Record({
   strings: startingStrings,
+  newString: '', // string in process of being created
 }))();
 
 const reducers = {
   CREATE_STRING(state, { raw }) {
     return state.setIn(['strings', raw], new List(parseRaw(raw)));
+  },
+  UPDATE_NEW_STRING(state, { newString }) {
+    return state.merge({ newString });
   },
 };
 

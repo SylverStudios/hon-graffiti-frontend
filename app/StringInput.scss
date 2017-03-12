@@ -1,19 +1,20 @@
+@import 'constants';
+
 .component {
-  margin-top: 20px;
   position: relative;
-  width: 50%;
+  flex: 2 0 0;
 }
 
 .submit {
   color: black;
 }
 
-
 $textFieldBackgroundColor: white;
 $lanePadding: 20px;
 
 @mixin same-font-and-spacing() {
   margin: 0;
+  padding: 0 !important;
   border: 0;
   outline: 0;
   font-size: 14px;
@@ -30,7 +31,6 @@ $lanePadding: 20px;
 }
 
 .mirrorElementContent {
-  // vertical-align: baseline;
   background: transparent;
   margin: 0;
   padding: 0;
