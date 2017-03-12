@@ -4,3 +4,20 @@
   background: #262A2F;
   border-bottom: #1E2024;
 }
+
+.inner {
+  width: 1050px;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  margin-left: 20px;
+}
+
+.userInfo {
+  margin-left: auto;
+  margin-right: 20px;
+}
