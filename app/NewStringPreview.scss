@@ -1,0 +1,12 @@
+@import 'constants';
+
+.component {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  flex: 3 0 0;
+  margin-left: 20px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+}

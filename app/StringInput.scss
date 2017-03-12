@@ -1,7 +1,45 @@
-.input {
-  color: black;
+@import 'constants';
+
+.component {
+  position: relative;
+  flex: 2 0 0;
 }
 
-.submit {
+@mixin same-font-and-spacing() {
+  margin: 0;
+  padding: 0 2px !important;
+  border: 0;
+  outline: 0;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  background: white;
+}
+
+.mirrorElement {
+  display: block;
+  @include same-font-and-spacing;
+}
+
+.mirrorElementContent {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  line-height: inherit;
+  font-family: inherit;
+}
+
+.input {
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  resize: none;
   color: black;
+  @include same-font-and-spacing;
 }

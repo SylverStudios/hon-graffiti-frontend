@@ -1,31 +1,65 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import style from './StringInput.scss';
 
-export default class StringInput extends Component {
+const connector = connect(({ newString }) => (
+  { newString }
+), {
+  createString: () => ({ type: 'CREATE_STRING' }),
+  updateNewString: newString => ({ type: 'UPDATE_NEW_STRING', newString }),
+});
+
+class StringInput extends Component {
   constructor(props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
   }
-
-  onSubmit() {
-    this.props.onSubmit(this.input.value);
+  onSubmit(e) {
+    if (e) {
+      e.preventDefault();
+    }
+    this.props.createString();
     this.input.value = '';
   }
-
+  onChange() {
+    const newString = this.input.value;
+    this.props.updateNewString(newString);
+  }
+  onKeyDown(e) {
+    if (e.keyCode === 13 && e.metaKey) {
+      e.preventDefault();
+      this.onSubmit();
+    }
+  }
   render() {
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
+      <form className={style.component} onSubmit={this.onSubmit}>
+        <pre className={style.mirrorElement}>
+          <span
+            className={style.mirrorElementContent}
+          >
+            {this.props.newString}
+          </span>
+          <br />
+        </pre>
+        <textarea
           ref={(c) => { this.input = c; }}
-          type="text"
           className={style.input}
+          value={this.props.newString}
+          onChange={this.onChange}
+          onKeyDown={this.onKeyDown}
           placeholder="Enter a string"
         />
-        <input type="submit" className={style.submit} value="Submit" />
       </form>
     );
   }
 }
 StringInput.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  createString: PropTypes.func.isRequired,
+  newString: PropTypes.string.isRequired,
+  updateNewString: PropTypes.func.isRequired,
 };
+
+export default connector(StringInput);
