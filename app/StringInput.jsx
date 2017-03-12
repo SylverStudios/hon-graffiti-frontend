@@ -1,18 +1,21 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import style from './StringInput.scss';
 
-export default class StringInput extends Component {
+const connector = connect(null, {
+  createString: raw => ({ type: 'CREATE_STRING', raw }),
+});
+
+class StringInput extends Component {
   constructor(props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
   }
-
   onSubmit(e) {
     e.preventDefault();
-    this.props.onSubmit(this.input.value);
+    this.props.createString(this.input.value);
     this.input.value = '';
   }
-
   render() {
     return (
       <form onSubmit={this.onSubmit}>
@@ -28,5 +31,7 @@ export default class StringInput extends Component {
   }
 }
 StringInput.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  createString: PropTypes.func.isRequired,
 };
+
+export default connector(StringInput);
