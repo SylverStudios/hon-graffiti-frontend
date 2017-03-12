@@ -5,7 +5,7 @@ import style from './StringInput.scss';
 const connector = connect(({ newString }) => (
   { newString }
 ), {
-  createString: raw => ({ type: 'CREATE_STRING', raw }),
+  createString: () => ({ type: 'CREATE_STRING' }),
   updateNewString: newString => ({ type: 'UPDATE_NEW_STRING', newString }),
 });
 
@@ -20,7 +20,7 @@ class StringInput extends Component {
     if (e) {
       e.preventDefault();
     }
-    this.props.createString(this.input.value);
+    this.props.createString();
     this.input.value = '';
   }
   onChange() {

@@ -15,8 +15,10 @@ const initialState = new (Record({
 }))();
 
 const reducers = {
-  CREATE_STRING(state, { raw }) {
-    return state.setIn(['strings', raw], new List(parseRaw(raw)));
+  CREATE_STRING(state) {
+    const raw = state.newString;
+    return state.setIn(['strings', raw], new List(parseRaw(raw)))
+      .set('newString', '');
   },
   UPDATE_NEW_STRING(state, { newString }) {
     return state.merge({ newString });
