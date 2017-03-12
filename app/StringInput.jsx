@@ -7,7 +7,8 @@ export default class StringInput extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit() {
+  onSubmit(e) {
+    e.preventDefault();
     this.props.onSubmit(this.input.value);
     this.input.value = '';
   }
