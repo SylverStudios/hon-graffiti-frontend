@@ -1,4 +1,6 @@
-const colorChars = {
+import { Record } from 'immutable';
+
+const colorChars = new (Record({
   w: 'white',
   r: 'red',
   b: 'blue',
@@ -11,7 +13,15 @@ const colorChars = {
   t: 'teal',
   v: 'grey',
   g: 'green',
-};
+}))();
+
+function getColorFromChar(c) {
+  return colorChars[c.toLowerCase()];
+}
+
+function isColorChar(c) {
+  return colorChars.has(c.toLowerCase());
+}
 
 function getNextTokenIndex(raw) {
   const nextCaret = raw.indexOf('^');
@@ -21,7 +31,7 @@ function getNextTokenIndex(raw) {
   if (nextCaret === raw.length - 1) { // caret is at end of string, not a token
     return -1;
   }
-  if (Object.prototype.hasOwnProperty.call(colorChars, raw.charAt(nextCaret + 1))) {
+  if (isColorChar(raw.charAt(nextCaret + 1))) {
     // caret is followed by valid color character, is a token
     return nextCaret;
   }
@@ -49,7 +59,7 @@ function consumeSegment(raw) {
   }
   const token = raw.substring(0, 2);
   const tokenAfterIndex = getNextTokenIndex(raw.substring(2));
-  const color = colorChars[token.charAt(1)];
+  const color = getColorFromChar(token.charAt(1));
   const content = tokenAfterIndex === -1
   ? raw.substring(2)
   : raw.substring(2, tokenAfterIndex + 2);

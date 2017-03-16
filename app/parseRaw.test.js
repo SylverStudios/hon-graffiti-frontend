@@ -1,7 +1,17 @@
 import { expect } from 'chai';
+import { List } from 'immutable';
 import parseRaw from './parseRaw';
 
 describe('parseRaw', () => {
+  it('recognizes all color characters, lowercase or uppercase', () => {
+    const colorChars = new List(['w', 'r', 'b', 'y', 'm', 'n', 'p', 'k', 'o', 't', 'v', 'g']);
+    colorChars.forEach((c) => {
+      expect(parseRaw(`^${c}`)[0].content).to.equal('');
+      expect(parseRaw(`^${c}`)[0].color).to.not.equal(undefined);
+      expect(parseRaw(`^${c.toUpperCase()}`)[0].content).to.equal('');
+      expect(parseRaw(`^${c.toUpperCase()}`)[0].color).to.not.equal(undefined);
+    });
+  });
   it('parses two colored segments', () => {
     expect(parseRaw('^rred^ggreen')).to.deep.equal([
       { color: 'red', content: 'red' },
