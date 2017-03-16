@@ -23,4 +23,21 @@ describe('parseRaw', () => {
   it('leaves the ^ and following character in the content if they do not map to a color', () => {
     expect(parseRaw('^r^z')[0].content).to.equal('^z');
   });
+  it('returns one segment with empty string content if input is only a color token', () => {
+    expect(parseRaw('^r')).to.deep.equal([
+      { color: 'red', content: '' },
+    ]);
+  });
+  it('handles dangling color token', () => {
+    expect(parseRaw('hello^r')).to.deep.equal([
+      { content: 'hello' },
+      { color: 'red', content: '' },
+    ]);
+  });
+  it('handles non-token caret followed by color token', () => {
+    expect(parseRaw('^^r')).to.deep.equal([
+      { content: '^' },
+      { color: 'red', content: '' },
+    ]);
+  });
 });

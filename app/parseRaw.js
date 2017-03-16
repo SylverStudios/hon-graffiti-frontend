@@ -24,7 +24,7 @@ function getNextTokenIndex(raw) {
   if (remainingNextCaret === -1) { // no other token in raw
     return -1;
   }
-  return nextCaret + remainingNextCaret;
+  return nextCaret + 1 + remainingNextCaret;
 }
 
 function consumeSegment(raw) {
