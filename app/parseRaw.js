@@ -1,18 +1,20 @@
 import { Record } from 'immutable';
 
-const colorChars = new (Record({
-  w: 'white',
-  r: 'red',
-  b: 'blue',
-  y: 'yellow',
-  m: 'magenta',
-  n: 'brown',
-  p: 'purple',
-  k: 'black',
-  o: 'orange',
-  t: 'teal',
-  v: 'grey',
-  g: 'green',
+// uppercase color chars map to same color
+// TODO get actual color values (if different) directly from hon
+export const colorChars = new (Record({
+  w: '#FFFFFF',
+  r: '#FF2000',
+  b: '#0034FE',
+  y: '#FFFC1D',
+  m: '#FF3BFE',
+  n: '#A5312D',
+  p: '#7F1D7E',
+  k: '#000000',
+  o: '#FFA308',
+  t: '#007E7F',
+  v: '#7F7F7F',
+  g: '#027D09',
 }))();
 
 function getColorFromChar(c) {
