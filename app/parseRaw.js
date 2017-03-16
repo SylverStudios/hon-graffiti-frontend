@@ -7,8 +7,28 @@ const colorChars = {
   p: 'purple',
 };
 
+function getNextTokenIndex(raw) {
+  const nextCaret = raw.indexOf('^');
+  if (nextCaret === -1) { // no carets, no tokens
+    return -1;
+  }
+  if (nextCaret === raw.length - 1) { // caret is at end of string, not a token
+    return -1;
+  }
+  if (Object.prototype.hasOwnProperty.call(colorChars, raw.charAt(nextCaret + 1))) {
+    // caret is followed by valid color character, is a token
+    return nextCaret;
+  }
+  // found caret is non token, recursively find next token with remaining length of raw
+  const remainingNextCaret = getNextTokenIndex(raw.substring(nextCaret + 1));
+  if (remainingNextCaret === -1) { // no other token in raw
+    return -1;
+  }
+  return nextCaret + remainingNextCaret;
+}
+
 function consumeSegment(raw) {
-  const nextTokenIndex = raw.indexOf('^');
+  const nextTokenIndex = getNextTokenIndex(raw);
   if (nextTokenIndex === -1) { // no more tokens
     return {
       segment: { content: raw },
@@ -22,7 +42,7 @@ function consumeSegment(raw) {
     };
   }
   const token = raw.substring(0, 2);
-  const tokenAfterIndex = raw.substring(2).indexOf('^');
+  const tokenAfterIndex = getNextTokenIndex(raw.substring(2));
   const color = colorChars[token.charAt(1)];
   const content = tokenAfterIndex === -1
   ? raw.substring(2)
