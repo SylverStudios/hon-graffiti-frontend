@@ -25,49 +25,92 @@ function isColorChar(c) {
   return colorChars.has(c.toLowerCase());
 }
 
-function getNextTokenIndex(raw) {
+export const digitColorValues = new (Record({
+  '0': '00',
+  '1': '1C',
+  '2': '38',
+  '3': '54',
+  '4': '70',
+  '5': '8C',
+  '6': 'A8',
+  '7': 'C4',
+  '8': 'E0',
+  '9': 'FF',
+}))();
+
+function getColorFromDigitString(digitString) {
+  let colorValue = '#';
+  for (const digit of digitString) {
+    colorValue += digitColorValues[digit];
+  }
+  return colorValue;
+}
+
+function isColorDigitString(potential) {
+  if (potential.length !== 3) {
+    return false;
+  }
+  for (const digit of potential) {
+    if (isNaN(parseInt(digit, 10))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function getColorFromToken(token) {
+  if (token.length === 2) { // eg. ^r
+    return getColorFromChar(token.charAt(1));
+  }
+  return getColorFromDigitString(token.substring(1));
+}
+
+function getNextToken(raw) {
   const nextCaret = raw.indexOf('^');
   if (nextCaret === -1) { // no carets, no tokens
-    return -1;
+    return undefined;
   }
   if (nextCaret === raw.length - 1) { // caret is at end of string, not a token
-    return -1;
+    return undefined;
   }
   if (isColorChar(raw.charAt(nextCaret + 1))) {
     // caret is followed by valid color character, is a token
-    return nextCaret;
+    return raw.substring(nextCaret, nextCaret + 2);
   }
-  // found caret is non token, recursively find next token with remaining length of raw
-  const remainingNextCaret = getNextTokenIndex(raw.substring(nextCaret + 1));
-  if (remainingNextCaret === -1) { // no other token in raw
-    return -1;
+  const isTokenOfDigitString = nextCaret + 3 < raw.length
+    && isColorDigitString(raw.substring(nextCaret + 1, nextCaret + 4));
+  if (isTokenOfDigitString) {
+    return raw.substring(nextCaret, nextCaret + 4);
   }
-  return nextCaret + 1 + remainingNextCaret;
+  return getNextToken(raw.substring(nextCaret + 1));
 }
 
 function consumeSegment(raw) {
-  const nextTokenIndex = getNextTokenIndex(raw);
-  if (nextTokenIndex === -1) { // no more tokens
+  const nextToken = getNextToken(raw);
+  if (!nextToken) { // no more tokens
     return {
       segment: { content: raw },
       remaining: false, // we're done
     };
   }
+  const nextTokenIndex = raw.indexOf(nextToken);
   if (nextTokenIndex !== 0) { // token isn't at the front
     return {
       segment: { content: raw.substring(0, nextTokenIndex) },
       remaining: raw.substring(nextTokenIndex),
     };
   }
-  const token = raw.substring(0, 2);
-  const tokenAfterIndex = getNextTokenIndex(raw.substring(2));
-  const color = getColorFromChar(token.charAt(1));
-  const content = tokenAfterIndex === -1
-  ? raw.substring(2)
-  : raw.substring(2, tokenAfterIndex + 2);
-  const remaining = tokenAfterIndex === -1
-  ? false
-  : raw.substring(tokenAfterIndex + 2);
+  const color = getColorFromToken(nextToken);
+  const tokenAfterNext = getNextToken(raw.substring(nextToken.length));
+  const indexOfTokenAfterNext = tokenAfterNext
+    ? raw.indexOf(tokenAfterNext)
+    : -1;
+  const content = tokenAfterNext
+    ? raw.substring(nextToken.length, indexOfTokenAfterNext)
+    : raw.substring(nextToken.length);
+  const remaining = tokenAfterNext
+    ? raw.substring(indexOfTokenAfterNext)
+    : false;
   return {
     segment: { color, content },
     remaining,
