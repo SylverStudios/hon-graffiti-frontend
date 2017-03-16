@@ -1,10 +1,16 @@
 const colorChars = {
+  w: 'white',
   r: 'red',
-  y: 'yellow',
-  g: 'green',
   b: 'blue',
-  o: 'orange',
+  y: 'yellow',
+  m: 'magenta',
+  n: 'brown',
   p: 'purple',
+  k: 'black',
+  o: 'orange',
+  t: 'teal',
+  v: 'grey',
+  g: 'green',
 };
 
 function getNextTokenIndex(raw) {
